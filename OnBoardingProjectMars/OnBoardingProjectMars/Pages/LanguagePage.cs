@@ -46,21 +46,21 @@ namespace OnBoardingProjectMars.Pages
         {
             //reading all the records from the table
             wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("td")));
-            ReadOnlyCollection<IWebElement> allElements = driver.FindElements(By.TagName("td"));
+            IList<IWebElement> languageList = driver.FindElements(By.TagName("td"));
 
             //boolean value to verify if the language is added
             bool addedLanguageStatus = false;
 
             //Verifying if language is added to the table
-            for (int i = 0; i < allElements.Count; i++)
+            for (int i = 0; i < languageList.Count; i++)
             {
-                if (allElements[i].Text == Language)
+                if (languageList[i].Text == Language)
                 {
                     addedLanguageStatus = true;
                     break;
                 }
             }
-            Assert.True(addedLanguageStatus, "Language not added");
+            Assert.That(addedLanguageStatus, "Language not added");
             driver.Quit();
         }
         public void EditLanguage(IWebDriver driver, string Language, string Level)
@@ -110,21 +110,19 @@ namespace OnBoardingProjectMars.Pages
         public void GetDeletedLanguage(IWebDriver driver, string Language)
         {
 
-            IWebElement deletedLanguae = driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table"));
-            if (deletedLanguae.Text != Language)
+            wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("td")));
+            IList<IWebElement> languagesList = driver.FindElements(By.TagName("td"));
+            foreach(IWebElement currentLanguage in languagesList)
             {
-                Assert.Pass("Language Deleted Sucessfully");
+                string lan = currentLanguage.GetAttribute("innerText").ToString();
+                if (lan == Language)
+                {
+                    Assert.Fail("The Language is not Deleted");
+                }
+                else
+                    Assert.Pass("The langusage is deleted");
 
             }
-            else
-            {
-                Assert.Fail("Language not deleted");
-            }
-
         }
-
-
-
-
     }
 }

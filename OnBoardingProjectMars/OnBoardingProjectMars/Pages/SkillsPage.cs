@@ -45,22 +45,23 @@ namespace OnBoardingProjectMars.Pages
         {
             // Reading all the skill elements in the table
             wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("td")));
-            ReadOnlyCollection<IWebElement> skillElements = driver.FindElements(By.TagName("td"));
+            IList<IWebElement> skillList = driver.FindElements(By.TagName("td"));
                    
             //boolean value to verify if the skill is added
             bool skillAddedStatus = false;
-            for (int i = 0; i < skillElements.Count; i++)
+            for (int i = 0; i < skillList.Count; i++)
             {
                 //Verifying if skill is added to the table
 
-                if (skillElements[i].Text == Skill)
+                if (skillList[i].Text == Skill)
                 {
                     //true if skill present
                     skillAddedStatus = true;
                     break;
                 }
             }
-            Assert.True(skillAddedStatus, "Skill not added");
+
+            Assert.That(skillAddedStatus, "Skill not added");
             driver.Quit();
         }
     }

@@ -47,15 +47,15 @@ namespace OnBoardingProjectMars.Pages
         {
             // Reading all the skill elements in the table
             wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("td")));
-            ReadOnlyCollection<IWebElement> certificateElements = driver.FindElements(By.TagName("td"));
+            IList<IWebElement> certificateList = driver.FindElements(By.TagName("td"));
 
             //boolean value to verify if the certificate is added
             bool certificateAddedStatus = false;
 
             //Verifying if Certificate is added to the table
-            for (int i = 0; i < certificateElements.Count; i++)
+            for (int i = 0; i < certificateList.Count; i++)
             {
-                if (certificateElements[i].Text == Certificate)
+                if (certificateList[i].Text == Certificate)
                 {
                     certificateAddedStatus = true;
                     break;
@@ -63,6 +63,8 @@ namespace OnBoardingProjectMars.Pages
             }
             Assert.True(certificateAddedStatus, "Certificate not added");
             driver.Quit();
+
         }
+         
     }
 }
