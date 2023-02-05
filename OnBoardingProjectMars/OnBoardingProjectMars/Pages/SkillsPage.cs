@@ -16,43 +16,43 @@ namespace OnBoardingProjectMars.Pages
     public class SkillsPage : CommonDriver
     {
 
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-        public void AddSkills(IWebDriver driver, string Skill, string SkillLevel)
+        //Find Elements
+        public IWebElement addNewSkillsButton => driver.FindElement(By.XPath(w_addNewSkillButton));
+        public IWebElement addSkillsTextBox => driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[1]/input"));
+        public IWebElement addSkillLevelDropdown => driver.FindElement(By.Name("level"));
+        public IWebElement addSkillButton => driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]"));
+        public IList<IWebElement> skillList => driver.FindElements(By.TagName("td"));
+
+        // Wait for elements
+        public string w_addNewSkillButton = "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/thead/tr/th[3]/div";
+
+        public void AddSkills(string Skill, string SkillLevel)
         {
-            // Identify and click the AddNew Skill button
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/thead/tr/th[3]/div")));
-            IWebElement addNewSkillsButton = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/thead/tr/th[3]/div"));
+            // click the AddNew Skill button
             addNewSkillsButton.Click();
 
-           // Enter the Skills name
-            IWebElement addSkillsTextBox = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[1]/input"));
+            // Enter the Skills name
             addSkillsTextBox.SendKeys(Skill);
 
             //Select the skill level from the dropdown
-            IWebElement addSkillLevelDropdown = driver.FindElement(By.Name("level"));
             addSkillLevelDropdown.Click();
             SelectElement selectAddSkillLevel = new SelectElement(addSkillLevelDropdown);
             selectAddSkillLevel.SelectByText(SkillLevel);
 
             //Click on Add skill to add the details
-            wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]")));
-            IWebElement addSkillButton = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]"));
             addSkillButton.Click();
-
         }
 
-        public void GetAddedSkills(IWebDriver driver, string Skill, string SkillLevel)
+        public bool GetAddedSkills(string Skill)
         {
-            // Reading all the skill elements in the table
-            wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("td")));
-            IList<IWebElement> skillList = driver.FindElements(By.TagName("td"));
-                   
+            Wait.WaitForElementToBeVisible(driver, "TagName", "td", 5);
+
             //boolean value to verify if the skill is added
             bool skillAddedStatus = false;
+
+            // Reading all the skill elements in the table
             for (int i = 0; i < skillList.Count; i++)
             {
-                //Verifying if skill is added to the table
-
                 if (skillList[i].Text == Skill)
                 {
                     //true if skill present
@@ -60,9 +60,7 @@ namespace OnBoardingProjectMars.Pages
                     break;
                 }
             }
-
-            Assert.That(skillAddedStatus, "Skill not added");
-            driver.Quit();
+            return skillAddedStatus;
         }
     }
 }

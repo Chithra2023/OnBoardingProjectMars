@@ -11,27 +11,31 @@ namespace OnBoardingProjectMars.Pages
 {
     public class ProfilePage : CommonDriver
     {
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(8));
-        public void GoToLanguageTab(IWebDriver driver)
+        //Find Elements
+        public IWebElement languageTab => driver.FindElement(By.XPath(w_languageTab));
+        public IWebElement skillsTab => driver.FindElement(By.XPath(w_skillsTab));
+        public IWebElement certificationTab => driver.FindElement(By.XPath(w_certificationTab));
+
+        //Wait for Elements
+        public string w_languageTab = "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[1]";
+        public string w_skillsTab = "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[2]";
+        public string w_certificationTab = "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[4]";
+        public void GoToLanguageTab()
         {
-            //Identify Languages Tab and click on Language Tab
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[1]")));
-            IWebElement languageTab = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
+            //Wait for Language Tab and click 
+            Wait.WaitForElementToBeClickable(driver, "XPath", w_languageTab, 5);
             languageTab.Click();
         }
-        public void GoToSkillsTab(IWebDriver driver)
+        public void GoToSkillsTab()
         {
-            //Identify the Skills Tab and  Click on Skills Tab
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[2]")));
-            IWebElement skillsTab = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[2]"));
+            //Wait for Skills Tab and  Click 
+            Wait.WaitForElementToBeClickable(driver, "XPath", w_skillsTab, 5);
             skillsTab.Click();
         }
-
-        public void GoToCertificationsTab(IWebDriver driver)
+        public void GoToCertificationsTab()
         {
-            // Identify the Certifications Tab and Click on Certification Tab
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[4]")));
-            IWebElement certificationTab = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[1]/a[4]"));
+            //Wait for Certifications Tab and  Click 
+            Wait.WaitForElementToBeClickable(driver, "XPath", w_certificationTab, 5);
             certificationTab.Click();
         }
     }

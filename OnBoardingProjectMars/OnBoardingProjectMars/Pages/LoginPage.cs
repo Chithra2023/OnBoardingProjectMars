@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using OnBoardingProjectMars.Utilities;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,32 +8,29 @@ using System.Threading.Tasks;
 
 namespace OnBoardingProjectMars.Pages
 {
-    public class LoginPage
+    public class LoginPage : CommonDriver
     {
-        public void loginActions(IWebDriver driver)
+        //Find Elements    
+        private IWebElement signInButton => driver.FindElement(By.XPath("//*[@id=\"home\"]/div/div/div[1]/div/a"));
+        private IWebElement usernameTextbox => driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[1]/input"));
+        private IWebElement passwordTextbox => driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[2]/input"));
+        private IWebElement loginButton => driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[4]/button"));
+
+        public void loginActions()
         {
-            //Open Chrome browser
-
+            //Launch portal
             driver.Manage().Window.Maximize();
-
-            // Launch the turnup portal
-            Thread.Sleep(1000);
             driver.Navigate().GoToUrl("http://192.168.0.107:5000/");
-
-            // Identify the Sign in button
-            IWebElement signInButton = driver.FindElement(By.XPath("//*[@id=\"home\"]/div/div/div[1]/div/a"));
+            //Click on SignIn
             signInButton.Click();
 
-            //Identify username textbox and eneter valid username
-            IWebElement usernameTextbox = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[1]/input"));
+            //Enter Username
             usernameTextbox.SendKeys("Chithra.Narayanan@gmail.com");
 
-            //Identify the password field and enter valid password
-            IWebElement passwordTextbox = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[2]/input"));
+            //Enter password
             passwordTextbox.SendKeys("Test123");
 
-            //Identify the Login Button and click
-            IWebElement loginButton = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[4]/button"));
+            //Click Login Button
             loginButton.Click();
         }
     }

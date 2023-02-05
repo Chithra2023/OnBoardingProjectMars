@@ -10,68 +10,67 @@ namespace OnBoardingProjectMars.StepDefinitions
     [Binding]
     public class ProfileLanguageStepDefinitions : CommonDriver
     {
+        LoginPage loginPageObj;
+        ProfilePage profilePageObj;
+        LanguagePage languagePageObj;
+        public ProfileLanguageStepDefinitions()
+        {
+            driver = new ChromeDriver();
+            loginPageObj = new LoginPage();
+            profilePageObj = new ProfilePage();
+            languagePageObj = new LanguagePage();
+        }
         [Given(@"User logged into Skillswap portal sucessfully")]
         public void GivenUserLoggedIntoSkillswapPortalSucessfully()
         {
-            driver = new ChromeDriver();
-            LoginPage loginPageObj = new LoginPage();
-            loginPageObj.loginActions(driver);
+            loginPageObj.loginActions();
         }
 
         [Given(@"User navigated to the Languages tab")]
         public void GivenUserNavigatedToTheLanguagesTab()
         {
-            ProfilePage profilePageObj = new ProfilePage();
-            profilePageObj.GoToLanguageTab(driver);
+             profilePageObj.GoToLanguageTab();
         }
 
         [When(@"User adds a new '([^']*)' and '([^']*)'")]
         public void WhenUserAddsANewAnd(string Language, string Level)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            languagePageObj.AddLanguage(driver, Language, Level);
+            languagePageObj.AddLanguage(Language, Level);
         }
-
 
         [Then(@"The '([^']*)' and '([^']*)' should be added sucessfully")]
         public void ThenTheAndShouldBeAddedSucessfully(string Language, string Level)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            languagePageObj.GetAddedLanguage(driver, Language, Level);
-         
+            string newAddedLanguage = languagePageObj.GetAddedLanguage();
+            Assert.That(newAddedLanguage == Language, "New Language could not be added sucessfully");
+            driver.Quit();
         }
 
         [When(@"User update the '([^']*)' and '([^']*)'")]
         public void WhenUserUpdateTheAnd(string Language, string Level)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            languagePageObj.EditLanguage(driver, Language, Level);
+             languagePageObj.EditLanguage(Language, Level);
         }
 
         [Then(@"The '([^']*)' and '([^']*)' should be updated sucessfully")]
         public void ThenTheAndShouldBeUpdatedSucessfully(string Language, string Level)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            string editedLanguage = languagePageObj.GetEditedLanguage(driver);
+            string editedLanguage = languagePageObj.GetEditedLanguage(Language);
             Assert.That(editedLanguage == Language, "The language is not updated");
             driver.Quit();
         }
         [When(@"User deletes the '([^']*)'")]
         public void WhenUserDeletesThe(string Language)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            languagePageObj.DeleteLanguage(driver, Language);
+             languagePageObj.DeleteLanguage();
         }
 
         [Then(@"The '([^']*)' should be deleted from the profile page")]
         public void ThenTheShouldBeDeletedFromTheProfilePage(string Language)
         {
-            LanguagePage languagePageObj = new LanguagePage();
-            languagePageObj.GetDeletedLanguage(driver, Language);
+            bool isDeleted = languagePageObj.GetDeletedLanguage(Language);
+            Assert.True(isDeleted);
             driver.Quit();
         }
-
-
-
     }
 }
